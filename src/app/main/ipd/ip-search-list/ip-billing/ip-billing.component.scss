@@ -1,0 +1,8 @@
+
+.ip-billing-section {
+    .billing-header-content{
+        display: grid;
+        gap: 8px 4px;
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

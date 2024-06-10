@@ -1,0 +1,124 @@
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Cross Consultation</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+                <div fxLayout="row" fxLayoutGap="5px">
+                    <app-common-date [screenFrom]="screenFromString" style="float:right"
+                        (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+        
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="InfoFormGroup">
+                <div fxLayout="column" class="gap-12">
+                    <div class="modal-card-container">
+                        <mat-card>
+                            <div class="patient-info-container">
+                                <div class="patient-info-box">
+                                    <div class="patient-info-title border-bottom pb-2">
+                                        <span class="h2">Patient Information</span>
+                                    </div>
+                                    <div class="patient-info-box my-8">
+                                        <div class="patient-info-row ">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key ">Visist Id</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{PatientHeaderObj.VisitId}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key ">Patient Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{PatientName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">OPIPNo</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{VisitId}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Visit Date</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{VisitDate}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                    <div class="modal-card-container">
+                        <mat-card>
+                            <div fxLayout="column" class="gap-8">
+                                <div class="form-title mb-2 border-bottom pb-2">
+                                    <span class="h3 font-weight-600">Cross Consultation Information</span>
+                                </div>
+                                <div class="form-body">
+                                    <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <input matInput type="datetime-local" placeholder="Visit Date / Time" formControlName="VisitDate" [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Department</mat-label>
+                                            <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput #dept (keydown)="onEnterdept($event)" formControlName="Departmentid" [matAutocomplete]="autoDep1" required>
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close" (click)="InfoFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close" (click)="InfoFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoDep1="matAutocomplete" [displayWith]="getOptionTextDep">
+                                                <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option" (onSelectionChange)="OnChangeDoctorList(option)">
+                                                    {{option.departmentName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Doctor Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput #deptdoc (keydown)="onEnterdeptdoc($event)" formControlName="DoctorID" [matAutocomplete]="autoDoctor1" required>
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close" (click)="InfoFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close" (click)="InfoFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                            </span>
+
+                                            <mat-autocomplete #autoDoctor1="matAutocomplete" [displayWith]="getOptionTextDoc">
+                                                <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option" (onSelectionChange)="isDoctorSelected = true;" (onSelectionChange)="onChangeDoctor(option)">
+                                                    {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b>
+                                                    {{option.DoctorId }}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal footer -->
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="saveflag">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

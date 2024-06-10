@@ -1,0 +1,190 @@
+<div class="modal-wrapper grid-container sample-detail-section">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Sample Detail Collection</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div fxLayout="column" class="gap-12">
+                <div class="modal-card-container">
+                    <mat-card>
+                        <div class="patient-info-container">
+                            <div class="patient-info-box">
+                                <div class="patient-info-title border-bottom pb-2">
+                                    <span class="h2">Patient Information</span>
+                                </div>
+                                <div class="patient-info-box my-8">
+                                    <div class="patient-info-row">
+                                        <div class="patient-col">
+                                            <span class="patient-col-key ">Reg No</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Patient Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Doctor Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
+                <div class="modal-card-container">
+                    <mat-card>
+                        <div class="date-container">
+                            <form [formGroup]="_SampleService.sampldetailform">
+                                <div fxLayout="column" fxLayoutAlign="start start">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Sample Collection Date / Time</mat-label>
+                                        <input matInput type="datetime-local" placeholder="start date" [value]="date" (change)="date=$event.target.value">
+                                    </mat-form-field>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-card>
+                </div>
+                <div class="modal-card-container table-container">
+                    <mat-card>
+                        <div class="table-wrapper">
+                            <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="h-320">
+
+                                <ng-container matColumnDef="checkbox" sticky>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                        <span class="material-icons" (click)="getChargesList()"> cached </span>
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact">
+                                        <mat-checkbox aria-label="Checked" (change)="onEdit($event, contact)">
+                                        </mat-checkbox>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="VADate">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Date
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.VADate | date:'shortDate'}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <!-- <ng-container matColumnDef="PathTestID" sticky>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PathTestID
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.PathTestID}}
+                                    </mat-cell>
+                                </ng-container> -->
+
+                                <ng-container matColumnDef="ServiceName" sticky>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TestName
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.ServiceName}}
+                                    </mat-cell>
+                                </ng-container>
+
+
+                                <ng-container matColumnDef="IsSampleCollection">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        Completed
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.IsSampleCollection}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="SampleCollectionTime">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        CollectionDate/Time
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.SampleCollectionTime}}
+                                    </mat-cell>
+                                </ng-container>
+                                <!-- <ng-container matColumnDef="PathReportID" sticky>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                        fxShow.gt-md>PathReportID
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.PathReportID}}
+
+                                    </mat-cell>
+                                </ng-container> -->
+
+                                <!-- 
+                                <ng-container matColumnDef="action">
+                                    <mat-header-cell *matHeaderCellDef style="color: white;"> Action
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let row">
+                                        <button mat-icon-button (click)="onEdit(row)">
+                                            <mat-icon title="Edit Menu">launch</mat-icon>
+                                        </button>
+                                        <button mat-icon-button (click)="onDeactive(row.RegNoSearch)" color="warn">
+                                            <mat-icon>delete_outline</mat-icon>
+                                        </button>
+                                    </mat-cell>
+                                </ng-container> -->
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        <!-- loading data... -->
+                                        <mat-spinner [color]="blue" [diameter]="20"></mat-spinner>
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                            </mat-table>
+
+                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons style="float: center;">
+                            </mat-paginator>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal footer -->
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="OnSave()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
