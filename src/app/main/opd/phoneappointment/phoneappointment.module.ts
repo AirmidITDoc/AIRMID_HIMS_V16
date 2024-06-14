@@ -36,6 +36,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { PhoneappointmentComponent } from './phoneappointment.component';
 import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-appointment.component';
+import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 
 const routes: Routes = [
     {
@@ -88,6 +89,7 @@ const routes: Routes = [
         MatTooltipModule,
         MatExpansionModule,
         MatListModule,
+        NgxMatTimepickerModule
     ],
     providers: [
         DatePipe

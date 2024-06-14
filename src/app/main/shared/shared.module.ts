@@ -7,6 +7,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { MatTimepickerModule } from 'mat-timepicker';
+import {NgxMatTimepickerModule} from 'ngx-mat-timepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { SmsEmailTemplateComponent } from './componets/sms-email-template/sms-email-template.component';
 import { HeaderComponent } from './componets/header/header.component';
@@ -38,6 +39,7 @@ import { DyanmicTableHeightDirective } from './directives/dynamic-table/dynamicT
         ReactiveFormsModule,
         MatDatepickerModule,
       //  MatTimepickerModule,
+      NgxMatTimepickerModule,
         MatButtonModule,
         MatCardModule,
         MatTabsModule,
